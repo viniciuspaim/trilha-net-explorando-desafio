@@ -17,6 +17,18 @@ namespace DesafioProjetoHospedagem.Models
         {
             // TODO: Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
             // *IMPLEMENTE AQUI*
+            if (Suite == null)
+            {
+                throw new Exception("A suíte não foi cadastrada.");
+            }
+            if (hospedes == null || hospedes.Count == 0)
+            {
+                throw new Exception("A lista de hóspedes não pode ser nula ou vazia.");
+            }
+            if (hospedes.Count > Suite.Capacidade)
+            {
+                throw new Exception("A quantidade de hóspedes não pode ser maior que a capacidade da suíte.");
+            }
             if (true)
             {
                 Hospedes = hospedes;
