@@ -6,7 +6,7 @@ namespace DesafioProjetoHospedagem.Models
         public Suite Suite { get; set; }
         public int DiasReservados { get; set; }
 
-        public Reserva() { }
+        public Reserva(string v) { }
 
         public Reserva(int diasReservados)
         {
@@ -25,6 +25,7 @@ namespace DesafioProjetoHospedagem.Models
             {
                 // TODO: Retornar uma exception caso a capacidade seja menor que o número de hóspedes recebido
                 // *IMPLEMENTE AQUI*
+                throw new Exception("A quantidade de hóspedes não pode ser maior que a capacidade da suíte.");
             }
         }
 
@@ -37,23 +38,57 @@ namespace DesafioProjetoHospedagem.Models
         {
             // TODO: Retorna a quantidade de hóspedes (propriedade Hospedes)
             // *IMPLEMENTE AQUI*
-            return 0;
+            if (Hospedes != null)
+            {
+                return Hospedes.Count;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public decimal CalcularValorDiaria()
         {
             // TODO: Retorna o valor da diária
             // Cálculo: DiasReservados X Suite.ValorDiaria
-            // *IMPLEMENTE AQUI*
-            decimal valor = 0;
+            if (Suite == null)
+            {
+                throw new Exception("A suíte não foi cadastrada.");
+            }
+            decimal valor = DiasReservados * Suite.ValorDiaria;
 
             // Regra: Caso os dias reservados forem maior ou igual a 10, conceder um desconto de 10%
-            // *IMPLEMENTE AQUI*
-            if (true)
+            if (DiasReservados >= 10)
             {
-                valor = 0;
+                valor -= valor * 0.1m; // Aplicando 10% de desconto
+            }
+            // Regra: Caso a suíte for do tipo "Premium", conceder um desconto de 20%
+            if (Suite.TipoSuite == "Premium")
+            {
+                valor -= valor * 0.2m; // Aplicando 20% de desconto
+            }
+            // Regra: Caso a suíte for do tipo "Luxo", conceder um desconto de 15%
+            if (Suite.TipoSuite == "Luxo")
+            {
+                valor -= valor * 0.15m; // Aplicando 15% de desconto
+            }
+            // Regra: Caso a suíte for do tipo "Básica", não conceder desconto
+            if (Suite.TipoSuite == "Básica")
+            {
+                // Não há desconto para suítes básicas
             }
 
+            // Verifica se o valor calculado é negativo ou zero
+            if (valor < 0)
+            {
+                throw new Exception("O valor calculado não pode ser negativo.");
+            }
+            else if (valor == 0)
+            {
+                throw new Exception("O valor calculado não pode ser zero.");
+            }
+            // Retorna o valor calculado
             return valor;
         }
     }
